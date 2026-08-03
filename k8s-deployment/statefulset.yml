@@ -49,7 +49,7 @@ spec:
     spec:
       containers:
       - name: rdicidr
-        image: elsdokr/rdicidr-app:v1.0.3
+        image: elsdokr/rdicidr-app:v1.0.4
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
