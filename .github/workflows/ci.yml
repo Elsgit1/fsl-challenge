@@ -5,22 +5,20 @@ on:
     branches: ["main"]
     paths:
       # ONLY run on merges to main if files inside the app directory change
-      - 'codebase/rdicidr-0.1.0/**'
+      - 'app/**'
 
   pull_request:
     branches:
       - "**"
 
-  workflow_dispatch:
-
 env:
   AWS_REGION: us-west-1
   REPOSITORY: rdicidr-app
   REGISTRY: Amazon ECR
-  APP_DIR: codebase/rdicidr-0.1.0
+  APP_DIR: app
 
 jobs:
-  build-and-push:
+  Containerize-and-push:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -132,7 +130,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
            image: ${{ steps.build-image.outputs.name }}
-           args: --severity-threshold=high --policy-path=.snyk --file=codebase/rdicidr-0.1.0/Dockerfile
+           args: --severity-threshold=high --policy-path=.snyk --file=app/Dockerfile
         continue-on-error: true
   
       - name: Push Docker image to registries
@@ -150,7 +148,7 @@ jobs:
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG
           docker push $DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG
 
-  ###########################################################
+      ###########################################################
       ###            Update image tag in manifest             ###
       ###########################################################         
 
@@ -175,11 +173,11 @@ jobs:
           git checkout -b $BRANCH_NAME
 
           # 3. Update the manifest file
-          sed -i 's|image: .*|image: '"$DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG"'|g' k8/service.yml
+          sed -i 's|image: .*|image: '"$DOCKERHUB_USERNAME/$APP_NAME:$IMAGE_TAG"'|g' k8s-deployment/statefulset.yml
           echo "Updated deployment image tag to $IMAGE_TAG"
 
           # 4. Commit and push the feature branch
-          git add k8/service.yml
+          git add k8s-deployment/statefulset.yml
           git commit -m "chore: updated manifest to new image tag $IMAGE_TAG"
           git push origin $BRANCH_NAME
 
