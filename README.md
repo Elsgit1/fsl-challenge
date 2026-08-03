@@ -24,4 +24,3 @@ A CIDR app, packaged as a container and deployed to Kubernetes.
 
 ## Credit
 - The application code was developed by [RDerik](https://github.com/rderik)
-- The app's name stands for RDerik's Interactive CIDR (RDICIDR) 
