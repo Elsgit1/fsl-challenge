@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: production
+  name: rdicidr
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: rdicidr-headless
-  namespace: production
+  namespace: rdicidr
 spec:
   ports:
   - port: 8080
@@ -21,7 +21,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: rdicidr
-  namespace: production
+  namespace: rdicidr
 spec:
   ports:
   - port: 8080
@@ -35,7 +35,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: rdicidr
-  namespace: production
+  namespace: rdicidr
 spec:
   serviceName: rdicidr-headless
   replicas: 3
@@ -78,7 +78,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: rdicr-pv-0
-  namespace: production
+  namespace: rdicidr
 spec:
   capacity:
     storage: 1Gi
@@ -94,7 +94,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: rdicr-pv-1
-  namespace: production
+  namespace: rdicidr
 spec:
   capacity:
     storage: 1Gi
@@ -110,7 +110,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: rdicr-pv-2
-  namespace: production
+  namespace: rdicidr
 spec:
   capacity:
     storage: 1Gi
