@@ -47,6 +47,8 @@ spec:
       labels:
         app: rdicidr
     spec:
+      nodeSelector:
+        karpenter.sh/nodepool: apps
       containers:
       - name: rdicidr
         image: elsdokr/rdicidr-app:v1.0.4
